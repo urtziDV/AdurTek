@@ -395,6 +395,94 @@ function initTiltEffect() {
 }
 
 /* ============================================
+   FORMULARIO DE SOLICITUD DE LICENCIAS B2B
+   ============================================ */
+function initLicenciaForm() {
+    const form = $('#licenciaForm');
+    if (!form) return;
+
+    const producto = form.dataset.producto || 'Producto';
+    const planSelector = form.querySelector('#planSelector');
+    const numLicenciasInput = form.querySelector('#numLicencias');
+    const precioTotalEl = form.querySelector('#precioTotal');
+    const precioDetalleEl = form.querySelector('#precioDetalle');
+
+    // Nombres legibles de los planes
+    const planNombres = {};
+    planSelector.querySelectorAll('.plan-option').forEach((opt) => {
+        const input = opt.querySelector('input');
+        const name = opt.querySelector('.plan-option-name');
+        if (input && name) {
+            planNombres[input.value] = name.textContent.trim();
+        }
+    });
+
+    function formatPrecio(valor) {
+        return valor.toLocaleString('es-ES', {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+        });
+    }
+
+    function calcularPrecio() {
+        const planSeleccionado = planSelector.querySelector('input[name="plan"]:checked');
+        if (!planSeleccionado) return;
+
+        const precioUnitario = parseFloat(planSeleccionado.dataset.precio) || 0;
+        const numLicencias = parseInt(numLicenciasInput.value, 10) || 1;
+        const esEnterprise = planSeleccionado.value === 'enterprise';
+        const nombrePlan = planNombres[planSeleccionado.value] || planSeleccionado.value;
+
+        if (esEnterprise) {
+            precioTotalEl.innerHTML = 'A medida';
+            precioDetalleEl.textContent = `${nombrePlan} · Precio personalizado`;
+            return;
+        }
+
+        const total = precioUnitario * numLicencias;
+        precioTotalEl.innerHTML = `${formatPrecio(total)} €<small style="font-size:0.5em; -webkit-text-fill-color:var(--text-secondary)">/mes</small>`;
+        precioDetalleEl.textContent = `${nombrePlan} · ${numLicencias} licencia${numLicencias !== 1 ? 's' : ''} × ${formatPrecio(precioUnitario)} €`;
+    }
+
+    // Eventos
+    planSelector.addEventListener('change', calcularPrecio);
+    numLicenciasInput.addEventListener('input', calcularPrecio);
+
+    // Envío por mailto
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const planSeleccionado = planSelector.querySelector('input[name="plan"]:checked');
+        const nombrePlan = planSeleccionado ? (planNombres[planSeleccionado.value] || planSeleccionado.value) : '';
+        const numLicencias = numLicenciasInput.value || '1';
+        const empresa = form.querySelector('#empresa').value.trim();
+        const nombre = form.querySelector('#nombre').value.trim();
+        const email = form.querySelector('#email').value.trim();
+        const mensaje = form.querySelector('#mensaje').value.trim();
+        const precio = precioTotalEl.textContent.trim();
+
+        const asunto = encodeURIComponent(`Solicitud de licencias ${producto} - ${nombrePlan}`);
+        const cuerpo = [
+            `Solicitud de licencias B2B - ${producto}`,
+            '',
+            `Plan: ${nombrePlan}`,
+            `Número de licencias: ${numLicencias}`,
+            `Precio estimado: ${precio}`,
+            '',
+            `Empresa: ${empresa}`,
+            `Nombre: ${nombre}`,
+            `Email: ${email}`,
+            mensaje ? `Mensaje:\n${mensaje}` : '',
+        ].filter(Boolean).join('\n');
+
+        window.location.href = `mailto:info@adurtek.dev?subject=${asunto}&body=${encodeURIComponent(cuerpo)}`;
+    });
+
+    // Cálculo inicial
+    calcularPrecio();
+}
+
+/* ============================================
    INICIALIZACIÓN
    ============================================ */
 document.addEventListener('DOMContentLoaded', () => {
@@ -408,4 +496,5 @@ document.addEventListener('DOMContentLoaded', () => {
     initContactForm();
     initFooterYear();
     initTiltEffect();
+    initLicenciaForm();
 });

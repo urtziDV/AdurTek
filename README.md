@@ -82,18 +82,28 @@ Esta web es **estática** (solo HTML, CSS y JS), por lo que se puede desplegar e
 - **Contacto**: conecta el formulario en `js/script.js` (función `initContactForm`) con tu backend o servicio de email (Formspree, EmailJS, etc.)
 - **Redes sociales**: actualiza los enlaces en la sección de contacto y footer
 
-## 💳 Configurar los links de pago (licencias B2B)
+## 💳 Solicitud de licencias B2B
 
-Los botones de compra de las tablas de precios en `teamplanner.html` y `tooltracker.html` enlazan a **links de pago** de Stripe o PayPal. Esto es **seguro**: no se expone ninguna clave secreta en el repositorio, solo un enlace público de pago.
+Las páginas de `teamplanner.html` y `tooltracker.html` incluyen un **formulario de solicitud de licencias** (sección `#solicitar`) con:
 
-Para configurarlos:
+- **Selector de plan** (tarjetas seleccionables)
+- **Número de licencias** (campo numérico)
+- **Cálculo automático del precio** en tiempo real según plan y nº de licencias
+- **Envío por email** (`mailto:`) a `info@adurtek.dev` con todos los datos de la solicitud
 
-1. Crea un **link de pago** en tu cuenta de Stripe (Productos → Crear link de pago) o un botón de pago en PayPal.
-2. Copia la URL del link de pago (p. ej. `https://buy.stripe.com/xxxxx`).
-3. En `teamplanner.html` y `tooltracker.html`, busca los comentarios `<!-- Reemplaza el href por tu link de pago ... -->` y sustituye el `href` de cada botón por tu URL real.
-4. El botón **Enterprise** usa `mailto:` para contactar con el equipo comercial, ya que es un plan a medida.
+### Cómo funciona el envío
 
-> ⚠️ **Nunca** pongas claves secretas (secret keys, API keys) de Stripe/PayPal en el código. Los links de pago son públicos y seguros; las claves secretas deben vivir solo en un backend o en variables de entorno.
+Al pulsar "Solicitar licencias", se abre el cliente de correo del usuario con un email pre-rellenado dirigido a `info@adurtek.dev`, incluyendo: producto, plan, número de licencias, precio estimado, empresa, nombre y email de contacto.
+
+### Personalizar precios
+
+Los precios por plan se definen en el atributo `data-precio` de cada radio button en el formulario:
+- En `teamplanner.html`: Starter `0`, Professional `9.99`, Enterprise `0` (a medida)
+- En `tooltracker.html`: Básico `49`, Profesional `99`, Enterprise `0` (a medida)
+
+Para cambiar un precio, edita el `data-precio` correspondiente. El cálculo (precio × nº de licencias) se realiza automáticamente en `js/script.js` (función `initLicenciaForm`).
+
+> ⚠️ **Seguridad**: este enfoque no expone ninguna clave secreta. El formulario solo genera un email de solicitud; el pago y la facturación se gestionan posteriormente con el cliente. Si más adelante quieres cobro automático, puedes sustituir el `mailto:` por links de pago de Stripe/PayPal (también seguros, sin claves en el repo).
 
 ## 📧 Contacto
 
