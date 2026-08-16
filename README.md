@@ -82,28 +82,51 @@ Esta web es **estática** (solo HTML, CSS y JS), por lo que se puede desplegar e
 - **Contacto**: conecta el formulario en `js/script.js` (función `initContactForm`) con tu backend o servicio de email (Formspree, EmailJS, etc.)
 - **Redes sociales**: actualiza los enlaces en la sección de contacto y footer
 
-## 💳 Solicitud de licencias B2B
+## 💳 Modelo de precios y licencias
 
-Las páginas de `teamplanner.html` y `tooltracker.html` incluyen un **formulario de solicitud de licencias** (sección `#solicitar`) con:
+Tanto **TeamPlanner** como **ToolTracker Pro** siguen el mismo modelo de negocio:
 
-- **Selector de plan** (tarjetas seleccionables)
+- **Starter (gratis)**: versión limitada para empezar, descargable desde Microsoft Store.
+- **PRO (99€ de por vida)**: pago único, sin suscripciones. Se compra mediante compra in-app desde la propia app en Microsoft Store.
+- **B2B (lotes de licencias)**: venta de lotes de licencias PRO con **descuento por volumen** y facturación personalizada. Se solicita presupuesto desde la web.
+
+### Descuento por volumen (B2B)
+
+El precio por licencia PRO (99€) se ajusta según el número de licencias compradas:
+
+| Nº de licencias | Descuento | Precio por licencia |
+|-----------------|-----------|---------------------|
+| 1 - 9           | 0%        | 99,00 €             |
+| 10 - 49         | 5%        | 94,05 €             |
+| 50 - 99         | 10%       | 89,10 €             |
+| 100+            | 15%       | 84,15 €             |
+
+### Botones de Microsoft Store
+
+Las tablas de precios de `teamplanner.html` y `tooltracker.html` incluyen botones de **descarga** (Starter) y **compra PRO** que enlazan a la app en Microsoft Store. Sustituye el enlace `https://apps.microsoft.com/detail/TU-APP-ID` por el ID real de cada app.
+
+### Formulario de solicitud B2B
+
+Las páginas de `teamplanner.html` y `tooltracker.html` incluyen un **formulario de solicitud de presupuesto B2B** (sección `#solicitar`) con:
+
+- **Selector de tipo de licencia** (PRO o B2B)
 - **Número de licencias** (campo numérico)
-- **Cálculo automático del precio** en tiempo real según plan y nº de licencias
+- **Cálculo automático del precio** en tiempo real (PRO: 99€ × nº de licencias; B2B: 99€ × nº de licencias con descuento por volumen)
 - **Envío por email** (`mailto:`) a `info@adurtek.dev` con todos los datos de la solicitud
 
 ### Cómo funciona el envío
 
-Al pulsar "Solicitar licencias", se abre el cliente de correo del usuario con un email pre-rellenado dirigido a `info@adurtek.dev`, incluyendo: producto, plan, número de licencias, precio estimado, empresa, nombre y email de contacto.
+Al pulsar "Solicitar presupuesto", se abre el cliente de correo del usuario con un email pre-rellenado dirigido a `info@adurtek.dev`, incluyendo: producto, tipo de licencia, número de licencias, precio estimado, descuento aplicado (si procede), empresa, nombre y email de contacto.
 
-### Personalizar precios
+### Personalizar precios y descuentos
 
-Los precios por plan se definen en el atributo `data-precio` de cada radio button en el formulario:
-- En `teamplanner.html`: Starter `0`, Professional `9.99`, Enterprise `0` (a medida)
-- En `tooltracker.html`: Básico `49`, Profesional `99`, Enterprise `0` (a medida)
+El precio base PRO se define en el atributo `data-precio` de cada radio button en el formulario:
+- En `teamplanner.html`: PRO `99`, B2B `99`
+- En `tooltracker.html`: PRO `99`, B2B `99`
 
-Para cambiar un precio, edita el `data-precio` correspondiente. El cálculo (precio × nº de licencias) se realiza automáticamente en `js/script.js` (función `initLicenciaForm`).
+Para cambiar el precio, edita el `data-precio` correspondiente. Los umbrales de descuento por volumen se definen en la función `obtenerDescuento()` de `js/script.js` (función `initLicenciaForm`).
 
-> ⚠️ **Seguridad**: este enfoque no expone ninguna clave secreta. El formulario solo genera un email de solicitud; el pago y la facturación se gestionan posteriormente con el cliente. Si más adelante quieres cobro automático, puedes sustituir el `mailto:` por links de pago de Stripe/PayPal (también seguros, sin claves en el repo).
+> ⚠️ **Seguridad**: este enfoque no expone ninguna clave secreta. El formulario solo genera un email de solicitud; el pago y la facturación se gestionan posteriormente con el cliente. La compra individual se realiza de forma segura mediante compra in-app en Microsoft Store.
 
 ## 📧 Contacto
 

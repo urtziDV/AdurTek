@@ -424,24 +424,41 @@ function initLicenciaForm() {
         });
     }
 
+    // Descuento por volumen para B2B (precio fijo por licencia con descuento según nº de licencias)
+    function obtenerDescuento(numLicencias) {
+        if (numLicencias >= 100) return 0.15; // 15%
+        if (numLicencias >= 50) return 0.10;  // 10%
+        if (numLicencias >= 10) return 0.05;  // 5%
+        return 0;
+    }
+
     function calcularPrecio() {
         const planSeleccionado = planSelector.querySelector('input[name="plan"]:checked');
         if (!planSeleccionado) return;
 
         const precioUnitario = parseFloat(planSeleccionado.dataset.precio) || 0;
         const numLicencias = parseInt(numLicenciasInput.value, 10) || 1;
-        const esEnterprise = planSeleccionado.value === 'enterprise';
+        const esB2B = planSeleccionado.value === 'b2b';
         const nombrePlan = planNombres[planSeleccionado.value] || planSeleccionado.value;
 
-        if (esEnterprise) {
-            precioTotalEl.innerHTML = 'A medida';
-            precioDetalleEl.textContent = `${nombrePlan} · Precio personalizado`;
+        if (esB2B) {
+            const descuento = obtenerDescuento(numLicencias);
+            const precioConDescuento = precioUnitario * (1 - descuento);
+            const total = precioConDescuento * numLicencias;
+
+            if (descuento > 0) {
+                precioTotalEl.innerHTML = `${formatPrecio(total)} €<small style="font-size:0.5em; -webkit-text-fill-color:var(--text-secondary)"> de por vida</small>`;
+                precioDetalleEl.textContent = `${nombrePlan} · ${numLicencias} licencia${numLicencias !== 1 ? 's' : ''} × ${formatPrecio(precioConDescuento)} € (${Math.round(descuento * 100)}% dto.)`;
+            } else {
+                precioTotalEl.innerHTML = `${formatPrecio(total)} €<small style="font-size:0.5em; -webkit-text-fill-color:var(--text-secondary)"> de por vida</small>`;
+                precioDetalleEl.textContent = `${nombrePlan} · ${numLicencias} licencia${numLicencias !== 1 ? 's' : ''} × ${formatPrecio(precioUnitario)} €`;
+            }
             return;
         }
 
         const total = precioUnitario * numLicencias;
-        precioTotalEl.innerHTML = `${formatPrecio(total)} €<small style="font-size:0.5em; -webkit-text-fill-color:var(--text-secondary)">/mes</small>`;
-        precioDetalleEl.textContent = `${nombrePlan} · ${numLicencias} licencia${numLicencias !== 1 ? 's' : ''} × ${formatPrecio(precioUnitario)} €`;
+        precioTotalEl.innerHTML = `${formatPrecio(total)} €<small style="font-size:0.5em; -webkit-text-fill-color:var(--text-secondary)"> de por vida</small>`;
+        precioDetalleEl.textContent = `${nombrePlan} · ${numLicencias} licencia${numLicencias !== 1 ? 's' : ''} × ${formatPrecio(precioUnitario)} € (pago único)`;
     }
 
     // Eventos
@@ -454,12 +471,14 @@ function initLicenciaForm() {
 
         const planSeleccionado = planSelector.querySelector('input[name="plan"]:checked');
         const nombrePlan = planSeleccionado ? (planNombres[planSeleccionado.value] || planSeleccionado.value) : '';
-        const numLicencias = numLicenciasInput.value || '1';
+        const numLicencias = parseInt(numLicenciasInput.value, 10) || 1;
         const empresa = form.querySelector('#empresa').value.trim();
         const nombre = form.querySelector('#nombre').value.trim();
         const email = form.querySelector('#email').value.trim();
         const mensaje = form.querySelector('#mensaje').value.trim();
         const precio = precioTotalEl.textContent.trim();
+        const esB2B = planSeleccionado && planSeleccionado.value === 'b2b';
+        const descuento = esB2B ? obtenerDescuento(numLicencias) : 0;
 
         const asunto = encodeURIComponent(`Solicitud de licencias ${producto} - ${nombrePlan}`);
         const cuerpo = [
@@ -468,6 +487,7 @@ function initLicenciaForm() {
             `Plan: ${nombrePlan}`,
             `Número de licencias: ${numLicencias}`,
             `Precio estimado: ${precio}`,
+            descuento > 0 ? `Descuento por volumen: ${Math.round(descuento * 100)}%` : '',
             '',
             `Empresa: ${empresa}`,
             `Nombre: ${nombre}`,
