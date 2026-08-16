@@ -1,6 +1,6 @@
 # AdurTek - Web Corporativa
 
-Web oficial de **AdurTek**, estudio de desarrollo de aplicaciones y webs. Alojada en [adurtek.dev](https://adurtek.dev).
+Web oficial de **AdurTek**, empresa de productos digitales propios (TeamPlanner, ToolTracker Pro y MundoSubastas.es). Alojada en [adurtek.dev](https://adurtek.dev).
 
 ## 🚀 Características
 
