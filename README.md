@@ -82,6 +82,19 @@ Esta web es **estática** (solo HTML, CSS y JS), por lo que se puede desplegar e
 - **Contacto**: conecta el formulario en `js/script.js` (función `initContactForm`) con tu backend o servicio de email (Formspree, EmailJS, etc.)
 - **Redes sociales**: actualiza los enlaces en la sección de contacto y footer
 
+## 💳 Configurar los links de pago (licencias B2B)
+
+Los botones de compra de las tablas de precios en `teamplanner.html` y `tooltracker.html` enlazan a **links de pago** de Stripe o PayPal. Esto es **seguro**: no se expone ninguna clave secreta en el repositorio, solo un enlace público de pago.
+
+Para configurarlos:
+
+1. Crea un **link de pago** en tu cuenta de Stripe (Productos → Crear link de pago) o un botón de pago en PayPal.
+2. Copia la URL del link de pago (p. ej. `https://buy.stripe.com/xxxxx`).
+3. En `teamplanner.html` y `tooltracker.html`, busca los comentarios `<!-- Reemplaza el href por tu link de pago ... -->` y sustituye el `href` de cada botón por tu URL real.
+4. El botón **Enterprise** usa `mailto:` para contactar con el equipo comercial, ya que es un plan a medida.
+
+> ⚠️ **Nunca** pongas claves secretas (secret keys, API keys) de Stripe/PayPal en el código. Los links de pago son públicos y seguros; las claves secretas deben vivir solo en un backend o en variables de entorno.
+
 ## 📧 Contacto
 
 - Email: info@adurtek.dev
