@@ -21,11 +21,17 @@ Web oficial de **AdurTek**, estudio de desarrollo de aplicaciones y webs. Alojad
 
 ```
 Adurtek.dev/
-├── index.html          # Página principal
+├── index.html              # Página principal
+├── teamplanner.html        # Página del proyecto TeamPlanner (con licencias B2B)
+├── tooltracker.html        # Página del proyecto ToolTracker Pro (con licencias B2B)
+├── mundosubastas.html      # Página del proyecto MundoSubastas.es
 ├── css/
-│   └── styles.css      # Estilos y efectos
+│   ├── styles.css          # Estilos y efectos principales
+│   └── projects.css        # Estilos de las páginas de proyectos y licencias B2B
 ├── js/
-│   └── script.js       # Interacciones y animaciones
+│   └── script.js           # Interacciones y animaciones
+├── images/
+│   └── hero-image.jpg      # Imagen de la sección "Sobre nosotros"
 └── README.md
 ```
 

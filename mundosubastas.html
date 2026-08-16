@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="MundoSubastas.es - Plataforma web de subastas online en español. Marketplace completo con pujas en tiempo real, gestión de usuarios y un diseño que engancha.">
+    <meta name="keywords" content="MundoSubastas, subastas online, marketplace, pujas en tiempo real">
+    <title>MundoSubastas.es | AdurTek</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/projects.css">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+</head>
+<body>
+
+    <!-- Cursor personalizado -->
+    <div class="cursor-dot" id="cursorDot"></div>
+    <div class="cursor-ring" id="cursorRing"></div>
+
+    <!-- Fondo de partículas -->
+    <canvas id="particlesCanvas"></canvas>
+
+    <!-- Barra de progreso de scroll -->
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-content">
+            <div class="preloader-logo">A</div>
+            <div class="preloader-bar">
+                <div class="preloader-bar-fill" id="preloaderBar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navegación -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-mark">A</span>
+                <span class="logo-text">Adur<span class="logo-accent">Tek</span></span>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html#inicio" class="nav-link">Inicio</a></li>
+                <li><a href="index.html#servicios" class="nav-link">Servicios</a></li>
+                <li><a href="index.html#proyectos" class="nav-link active">Proyectos</a></li>
+                <li><a href="index.html#sobre" class="nav-link">Sobre nosotros</a></li>
+                <li><a href="index.html#contacto" class="nav-link">Contacto</a></li>
+            </ul>
+            <div class="nav-cta">
+                <a href="https://mundosubastas.es" target="_blank" class="btn btn-primary btn-sm">Visitar web</a>
+            </div>
+            <button class="hamburger" id="hamburger" aria-label="Menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <header class="project-page-hero" id="inicio">
+        <div class="hero-bg">
+            <div class="hero-gradient"></div>
+            <div class="hero-orb orb-1"></div>
+            <div class="hero-orb orb-2"></div>
+        </div>
+        <div class="hero-content">
+            <nav class="breadcrumb">
+                <a href="index.html">Inicio</a>
+                <span class="separator">/</span>
+                <a href="index.html#proyectos">Proyectos</a>
+                <span class="separator">/</span>
+                <span class="current">MundoSubastas.es</span>
+            </nav>
+            <div class="hero-badge reveal">
+                <span class="badge-dot"></span>
+                Web · Plataforma de subastas
+            </div>
+            <h1 class="hero-title reveal">Mundo<span class="gradient-text">Subastas</span>.es</h1>
+            <p class="hero-subtitle reveal">
+                La plataforma web de subastas online en español. Un marketplace completo con pujas en tiempo real, gestión de usuarios y un diseño que engancha.
+            </p>
+            <div class="hero-actions reveal">
+                <a href="https://mundosubastas.es" target="_blank" class="btn btn-primary">Visitar la web <span class="btn-arrow">→</span></a>
+                <a href="#caracteristicas" class="btn btn-outline">Ver características</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- CARACTERÍSTICAS -->
+    <section class="features-section" id="caracteristicas">
+        <div class="section-header reveal">
+            <span class="section-tag">Características</span>
+            <h2 class="section-title">Una plataforma que <span class="gradient-text">engancha</span></h2>
+            <p class="section-subtitle">Todo lo necesario para comprar y vender en subastas online de forma segura y emocionante.</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card reveal">
+                <div class="feature-icon">⚡</div>
+                <h3>Pujas en tiempo real</h3>
+                <p>Puja en directo con actualizaciones instantáneas. Siente la emoción de cada subasta sin perderte ni un segundo.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">🛒</div>
+                <h3>Marketplace completo</h3>
+                <p>Publica, busca y compra artículos de todo tipo. Un marketplace robusto y fácil de usar para compradores y vendedores.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">👤</div>
+                <h3>Gestión de usuarios</h3>
+                <p>Perfiles completos, historial de pujas, valoraciones y sistema de reputación para generar confianza en la comunidad.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">💳</div>
+                <h3>Pagos seguros</h3>
+                <p>Integración con pasarelas de pago seguras para proteger cada transacción entre compradores y vendedores.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">🔔</div>
+                <h3>Notificaciones</h3>
+                <p>Recibe alertas cuando te superen en una puja, cuando ganes una subasta o cuando un artículo que sigues esté por terminar.</p>
+            </div>
+            <div class="feature-card reveal">
+                <div class="feature-icon">📱</div>
+                <h3>Diseño responsive</h3>
+                <p>Una experiencia optimizada para cualquier dispositivo. Puja desde tu móvil, tablet u ordenador sin perder funcionalidad.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CÓMO FUNCIONA -->
+    <section class="process-section">
+        <div class="section-header reveal">
+            <span class="section-tag">Cómo funciona</span>
+            <h2 class="section-title">Participa en <span class="gradient-text">3 pasos</span></h2>
+        </div>
+        <div class="process-grid">
+            <div class="process-step reveal">
+                <span class="step-number">1</span>
+                <h3>Crea tu cuenta</h3>
+                <p>Regístrate gratis y configura tu perfil para empezar a comprar y vender en subastas.</p>
+            </div>
+            <div class="process-step reveal">
+                <span class="step-number">2</span>
+                <h3>Explora y puja</h3>
+                <p>Busca artículos que te interesen, sigue las subastas y realiza tus pujas en tiempo real.</p>
+            </div>
+            <div class="process-step reveal">
+                <span class="step-number">3</span>
+                <h3>Gana y recibe</h3>
+                <p>Si ganas la subasta, completa el pago seguro y recibe tu artículo. ¡Así de fácil!</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="project-cta" id="contacto">
+        <div class="cta-container reveal">
+            <div class="cta-glow"></div>
+            <h2 class="cta-title">¿Quieres probar la <span class="gradient-text">plataforma?</span></h2>
+            <p class="cta-subtitle">Visita MundoSubastas.es y descubre la emoción de las subastas online en español.</p>
+            <a href="https://mundosubastas.es" target="_blank" class="btn btn-primary btn-lg">Visitar MundoSubastas.es <span class="btn-arrow">→</span></a>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-brand">
+                <a href="index.html" class="nav-logo">
+                    <span class="logo-mark">A</span>
+                    <span class="logo-text">Adur<span class="logo-accent">Tek</span></span>
+                </a>
+                <p>Desarrollo de apps y webs que impactan. Hecho con pasión en España.</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-col">
+                    <h4>Navegación</h4>
+                    <a href="index.html#inicio">Inicio</a>
+                    <a href="index.html#servicios">Servicios</a>
+                    <a href="index.html#proyectos">Proyectos</a>
+                    <a href="index.html#sobre">Sobre nosotros</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Proyectos</h4>
+                    <a href="teamplanner.html">TeamPlanner</a>
+                    <a href="tooltracker.html">ToolTracker Pro</a>
+                    <a href="mundosubastas.html">MundoSubastas.es</a>
+                </div>
+                <div class="footer-col">
+                    <h4>Contacto</h4>
+                    <a href="mailto:info@adurtek.dev">info@adurtek.dev</a>
+                    <a href="https://adurtek.dev">adurtek.dev</a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© <span id="year"></span> AdurTek. Todos los derechos reservados.</p>
+            <p>Hecho con <span class="heart">❤</span> y mucho café</p>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
