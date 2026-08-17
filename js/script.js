@@ -406,6 +406,7 @@ function initLicenciaForm() {
 
     const producto = form.dataset.producto || 'Producto';
     const planSelector = form.querySelector('#planSelector');
+    const modalidadSelector = form.querySelector('#modalidadSelector');
     const numLicenciasInput = form.querySelector('#numLicencias');
     const precioTotalEl = form.querySelector('#precioTotal');
     const precioDetalleEl = form.querySelector('#precioDetalle');
@@ -435,14 +436,24 @@ function initLicenciaForm() {
         return 0;
     }
 
+    // Etiqueta legible de la modalidad (vitalicia / anual)
+    function obtenerModalidad() {
+        const modalidad = modalidadSelector ? modalidadSelector.querySelector('input[name="modalidad"]:checked') : null;
+        return modalidad ? modalidad.value : 'vitalicia';
+    }
+
     function calcularPrecio() {
         const planSeleccionado = planSelector.querySelector('input[name="plan"]:checked');
         if (!planSeleccionado) return;
 
-        const precioUnitario = parseFloat(planSeleccionado.dataset.precio) || 0;
+        const modalidad = obtenerModalidad();
+        const esAnual = modalidad === 'anual';
+        const precioUnitario = parseFloat(planSeleccionado.dataset[esAnual ? 'precioAnual' : 'precioVitalicia']) || 0;
         const numLicencias = parseInt(numLicenciasInput.value, 10) || 1;
-        const esB2B = planSeleccionado.value === 'b2b';
+        const esB2B = planSeleccionado.value === 'enterprise';
         const nombrePlan = planNombres[planSeleccionado.value] || planSeleccionado.value;
+        const etiquetaModalidad = esAnual ? 'anual' : 'vitalicia';
+        const sufijoUnidad = esAnual ? '/año' : '';
 
         if (esB2B) {
             const descuento = obtenerDescuento(numLicencias);
@@ -450,22 +461,23 @@ function initLicenciaForm() {
             const total = precioConDescuento * numLicencias;
 
             if (descuento > 0) {
-                precioTotalEl.innerHTML = `${formatPrecio(total)} €<small style="font-size:0.5em; -webkit-text-fill-color:var(--text-secondary)"> de por vida</small>`;
-                precioDetalleEl.textContent = `${nombrePlan} · ${numLicencias} licencia${numLicencias !== 1 ? 's' : ''} × ${formatPrecio(precioConDescuento)} € (${Math.round(descuento * 100)}% dto.)`;
+                precioTotalEl.innerHTML = `${formatPrecio(total)} €<small style="font-size:0.5em; -webkit-text-fill-color:var(--text-secondary)"> ${etiquetaModalidad}</small>`;
+                precioDetalleEl.textContent = `${nombrePlan} · ${numLicencias} licencia${numLicencias !== 1 ? 's' : ''} × ${formatPrecio(precioConDescuento)} €${sufijoUnidad} (${Math.round(descuento * 100)}% dto.)`;
             } else {
-                precioTotalEl.innerHTML = `${formatPrecio(total)} €<small style="font-size:0.5em; -webkit-text-fill-color:var(--text-secondary)"> de por vida</small>`;
-                precioDetalleEl.textContent = `${nombrePlan} · ${numLicencias} licencia${numLicencias !== 1 ? 's' : ''} × ${formatPrecio(precioUnitario)} €`;
+                precioTotalEl.innerHTML = `${formatPrecio(total)} €<small style="font-size:0.5em; -webkit-text-fill-color:var(--text-secondary)"> ${etiquetaModalidad}</small>`;
+                precioDetalleEl.textContent = `${nombrePlan} · ${numLicencias} licencia${numLicencias !== 1 ? 's' : ''} × ${formatPrecio(precioUnitario)} €${sufijoUnidad}`;
             }
             return;
         }
 
         const total = precioUnitario * numLicencias;
-        precioTotalEl.innerHTML = `${formatPrecio(total)} €<small style="font-size:0.5em; -webkit-text-fill-color:var(--text-secondary)"> de por vida</small>`;
-        precioDetalleEl.textContent = `${nombrePlan} · ${numLicencias} licencia${numLicencias !== 1 ? 's' : ''} × ${formatPrecio(precioUnitario)} € (pago único)`;
+        precioTotalEl.innerHTML = `${formatPrecio(total)} €<small style="font-size:0.5em; -webkit-text-fill-color:var(--text-secondary)"> ${etiquetaModalidad}</small>`;
+        precioDetalleEl.textContent = `${nombrePlan} · ${numLicencias} licencia${numLicencias !== 1 ? 's' : ''} × ${formatPrecio(precioUnitario)} €${sufijoUnidad} (${esAnual ? 'suscripción anual' : 'pago único'})`;
     }
 
     // Eventos
     planSelector.addEventListener('change', calcularPrecio);
+    if (modalidadSelector) modalidadSelector.addEventListener('change', calcularPrecio);
     numLicenciasInput.addEventListener('input', calcularPrecio);
 
     // Envío por mailto
@@ -474,13 +486,15 @@ function initLicenciaForm() {
 
         const planSeleccionado = planSelector.querySelector('input[name="plan"]:checked');
         const nombrePlan = planSeleccionado ? (planNombres[planSeleccionado.value] || planSeleccionado.value) : '';
+        const modalidad = obtenerModalidad();
+        const modalidadLabel = modalidad === 'anual' ? 'Anual (suscripción)' : 'Vitalicia (pago único)';
         const numLicencias = parseInt(numLicenciasInput.value, 10) || 1;
         const empresa = form.querySelector('#empresa').value.trim();
         const nombre = form.querySelector('#nombre').value.trim();
         const email = form.querySelector('#email').value.trim();
         const mensaje = form.querySelector('#mensaje').value.trim();
         const precio = precioTotalEl.textContent.trim();
-        const esB2B = planSeleccionado && planSeleccionado.value === 'b2b';
+        const esB2B = planSeleccionado && planSeleccionado.value === 'enterprise';
         const descuento = esB2B ? obtenerDescuento(numLicencias) : 0;
 
         const asunto = encodeURIComponent(`Solicitud de licencias ${producto} - ${nombrePlan}`);
@@ -488,6 +502,7 @@ function initLicenciaForm() {
             `Solicitud de licencias B2B - ${producto}`,
             '',
             `Plan: ${nombrePlan}`,
+            `Modalidad: ${modalidadLabel}`,
             `Número de licencias: ${numLicencias}`,
             `Precio estimado: ${precio}`,
             descuento > 0 ? `Descuento por volumen: ${Math.round(descuento * 100)}%` : '',
