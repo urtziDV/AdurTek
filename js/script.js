@@ -319,6 +319,9 @@ function initContactForm() {
     const form = $('#contactForm');
     const success = $('#formSuccess');
 
+    // El formulario de contacto solo existe en index.html
+    if (!form) return;
+
     form.addEventListener('submit', (e) => {
         e.preventDefault();
 
